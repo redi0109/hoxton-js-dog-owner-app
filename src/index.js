@@ -4,39 +4,29 @@ let dogList = document.querySelector(".dogs-list")
 let dogSection = document.querySelector('.main__dog-section')
 
 function addDogListItem(dog){
+    for (let dog of data){
+    
     let liEl = document.createElement('li')
     liEl.className = 'dogs-list__button'
     liEl.textContent = dog.name
     dogList.append(liEl)
+    
+    liEl.addEventListener('click', function() {
+        displayDog(dog)
+    })
+   }
 }
 
 function displayDog(dog){
-//This is a template for the main dog card -->
 
-// <!-- <section class="main__dog-section">
-// <h2>Mr. Bonkers</h2>
-// <img
-//   src="https://curriculum-content.s3.amazonaws.com/js/woof-woof/dog_1.jpg"
-//   alt=""
-// />
-// <div class="main__dog-section__desc">
-//   <h3>Bio</h3>
-//   <p>
-//     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Harum,
-//     minima voluptates libero cumque rerum consequatur optio aliquid sint
-//     eum maxime illo laborum omnis quo ab rem cupiditate nulla
-//     perspiciatis ipsum!
-//   </p>
-// </div class="main__dog-section__btn">
-// <p><em>Is naughty?</em> yes!</p>
-// <button>Good dog!</button>
-// </section>  -->
+dogSection.textContent = ''
 
 let titleH2 = document.createElement('h2')
 titleH2.textContent = dog.name
 
 let dogImg = document.createElement('img')
 dogImg.src = dog.image
+dogImg.alt = ''
 
 let textDiv = document.createElement('div')
 textDiv.className = 'main__dog-section__desc'
@@ -47,21 +37,40 @@ textH3.textContent = 'Bio'
 let textP = document.createElement('p')
 textP.textContent = dog.bio
 
-let btnDiv = document.createElement('div')
-btnDiv.className = 'main__dog-section__btn'
+let isNaughtyP = document.createElement('p')
+let isNaughtyEm = document.createElement('em')
+isNaughtyEm.textContent = 'Is naughty?'
+if(dog.isGoodDog === false){
+    isNaughtyP.append(isNaughtyEm, ' Yes!')
+}else{
+    isNaughtyP.append(isNaughtyEm, ' No!')
+}
 
-let btnP = document.createElement('p')
-btnP.textContent = dog.isGoodDog
 
-let dogBtn = document.createComment('button')
-
-
-
-
+let dogBtn = document.createElement('button')
+dogBtn.className = 'main__dog-section__btn'
+if(dog.isGoodDog){
+    dogBtn.textContent = 'Good dog!'
+}else{
+    dogBtn.textContent = 'Bad dog!'
+}
+    dogBtn.addEventListener("click", function () {
+        switchGoodDog(dog) 
+        displayDog (dog)
+    }) 
+textDiv.append(textH3, textP)
+dogSection.append(titleH2, dogImg, textDiv, isNaughtyP, dogBtn)
 
 
 }
 
-for (let dog of data){
-    addDogListItem(dog)
+
+function switchGoodDog(dog) {
+    dog.isGoodDog = !dog.isGoodDog
+
 }
+
+
+addDogListItem()
+
+displayDog(data)
